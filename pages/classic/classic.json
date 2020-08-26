@@ -2,6 +2,9 @@
   "usingComponents": {
     "v-like": "../../components/like",
     "v-movie": "../../components/classic/movie",
-    "v-epsoide": "../../components/epsoide"
+    "v-episode": "../../components/episode",
+    "v-navi": "../../components/navi",
+    "v-music": "../../components/classic/music",
+    "v-essay": "../../components/classic/essay"
   }
 }

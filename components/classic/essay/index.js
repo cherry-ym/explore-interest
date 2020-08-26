@@ -1,10 +1,11 @@
-// components/classic/movie/index.j
+// components/classic/essay/index.js
 import {classicBeh} from '../classic-beh'
 Component({
   /**
    * 组件的属性列表
    */
-  behaviors: [classicBeh],
+  //组件继承,多继承
+  behaviors:[classicBeh],
   properties: {
   },
 
@@ -12,7 +13,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    
+
   },
 
   /**

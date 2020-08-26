@@ -10,22 +10,55 @@ Page({
    */
   data: {
     classicData: null,
+    latest: true,
+    first: false,
+    likeCount:0,
+    likeStatus:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    //数据更新，Storage
     classicModel.getLatest((res) => {
       this.setData({
-        classicData: res
+        classicData: res,
+        likeCount: res.fav_nums,
+        likeStatus: res.like_status,
       })
+      //latestClassic 和 currentClassic
     })
     
   },
   onLike: function(event) {
     let behavior = event.detail.behavior
     likeModel.like(behavior, this.data.classicData.id, this.data.classicData.type)
+  },
+  _updataClassic: function(nextOrPrevious) {
+    let index = this.data.classicData.index
+    classicModel.getClassic(index, nextOrPrevious,(res)=>{
+      this._getLikeStatus(res.id, res.type)
+      this.setData({
+        classicData: res,
+        latest: classicModel.isLatest(res.index),
+        first: classicModel.isFirst(res.index)
+      })
+    })
+  },
+  onNext: function(event) {
+    this._updataClassic('next')
+  },
+  onPrevious: function(event) {
+    this._updataClassic('previous')
+  },
+  _getLikeStatus:function(artID,category) {
+    likeModel.getClassicLikeStatus(artID,category, (res) => {
+      this.setData({
+        likeCount:res.fav_nums,
+        likeStatus: res.like_status,
+      })
+    })
   },
 
   /**
