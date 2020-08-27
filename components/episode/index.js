@@ -25,7 +25,7 @@ Component({
     '十二月'],
     year: 0,
     mounth: '',
-    _index: ''
+    _index: '',
   },
 
   attached: function() {
@@ -33,8 +33,8 @@ Component({
     let year = date.getFullYear()
     let mounth = date.getMonth()
     this.setData({
-      year: year,
-      mounth: this.data.mounths[mounth]
+      year,
+      mounth: this.data.mounths[mounth],
     })
   },
 

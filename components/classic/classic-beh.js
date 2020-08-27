@@ -1,4 +1,4 @@
-export let classicBeh = Behavior({
+export const classicBeh = Behavior({
   properties: {
     img: String,
     content: String,
