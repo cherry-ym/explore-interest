@@ -15,3 +15,4 @@
     </view>
 </view>
 
+<v-search wx:if="{{searching}}" bind:cancel="onCancel" hotWords="{{hotWords}}"/>

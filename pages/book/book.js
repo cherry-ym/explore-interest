@@ -1,13 +1,17 @@
 // pages/book/book.js
 import {BookModel} from '../../models/book'
+import {KeywordModel} from '../../models/keyword'
 const bookModel = new BookModel()
+const keywordModel = new KeywordModel()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    books:[]
+    books:[],
+    searching: false,
+    hotWords: [],
   },
 
   /**
@@ -21,8 +25,25 @@ Page({
           books:res
         })
       })
+
+      keywordModel.getHot().then(res => {
+        this.setData({
+          hotWords: res.hot
+        })
+      })
   },
 
+  onSearching() {
+    this.setData({
+      searching: true
+    })
+  },
+
+  onCancel() {
+    this.setData({
+      searching: false
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

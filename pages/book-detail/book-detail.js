@@ -1,6 +1,8 @@
 // pages/book-detail/book-detail.js
 import {BookModel} from '../../models/book'
+import {LikeModel} from '../../models/like'
 const bookModel = new BookModel()
+const likeModel = new LikeModel()
 Page({
 
   /**
@@ -11,31 +13,94 @@ Page({
     book:null,
     likeStatus: false,
     likeCount: 0,
+    posting: false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading()
     const bid = options.bid
-    bookModel.getDetail(bid).then(res => {
-      this.setData({
-        book:res
+    const detail = bookModel.getDetail(bid)
+    const comments = bookModel.getComments(bid)
+    const likeStatus = bookModel.getLikeStatus(bid)
+
+    Promise.all([detail, comments, likeStatus])
+      .then(res => {
+        this.setData({
+          book: res[0],
+          comments: res[1].comments,
+          likeStatus: res[2].like_status,
+          likeCount: res[2].fav_nums
+        })
+        wx.hideLoading()
       })
-    })
-    bookModel.getLikeStatus(bid).then(res => {
-      this.setData({
-        likeStatus:res.like_status,
-        likeCount:res.fav_nums
-      })
-    })
-    bookModel.getComments(bid).then(res => {
-      this.setData({
-        comments:res.comments
-      })
+  //   bookModel.getDetail(bid).then(res => {
+  //     this.setData({
+  //       book:res
+  //     })
+  //   })
+  //   bookModel.getLikeStatus(bid).then(res => {
+  //     this.setData({
+  //       likeStatus:res.like_status,
+  //       likeCount:res.fav_nums
+  //     })
+  //   })
+  //   bookModel.getComments(bid).then(res => {
+  //     this.setData({
+  //       comments:res.comments
+  //     })
+  //   })
+  },
+
+  onLike(event) {
+    const like_or_cancel = event.detail.behavior
+    likeModel.like(like_or_cancel, this.data.book.id, 400)
+  },
+
+  onFakePost(){
+    this.setData({
+      posting: true
     })
   },
 
+  onCancel(){
+    this.setData({
+      posting: false
+    })
+  },
+
+  onPost(event){
+    const comment = event.detail.text || event.detail.value
+    if(!comment){
+      return
+    }
+    if(comment.length > 12){
+      wx.showToast({
+        title: '短评最多12个字',
+        icon: 'none'
+      })
+      return
+    }
+
+    bookModel.postComment(this.data.book.id, comment)
+      .then(res => {
+        wx.showToast({
+          title: '+1',
+          icon: 'none'
+        })
+
+        this.data.comments.unshift({
+          content:comment,
+          nums:1
+        })
+        this.setData({
+          comments: this.data.comments,
+          posting: false,
+        })
+      })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
