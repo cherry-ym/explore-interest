@@ -1,6 +1,7 @@
 // pages/book/book.js
 import {BookModel} from '../../models/book'
 import {KeywordModel} from '../../models/keyword'
+import {random} from '../../utils/common'
 const bookModel = new BookModel()
 const keywordModel = new KeywordModel()
 Page({
@@ -12,6 +13,7 @@ Page({
     books:[],
     searching: false,
     hotWords: [],
+    more: '',
   },
 
   /**
@@ -42,6 +44,13 @@ Page({
   onCancel() {
     this.setData({
       searching: false
+    })
+  },
+
+  onReachBottom(){
+    this.setData({
+      //不能一直赋值true
+      more:random(16)
     })
   },
   /**

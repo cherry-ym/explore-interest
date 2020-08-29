@@ -2,6 +2,9 @@ import { HTTP } from "../utils/http-p"
 
 export class KeywordModel extends HTTP{
   addToHistory(keyword){
+    if(!keyword){
+      return
+    }
     //存入缓存
     let history = this.getHistory()
     const has = history.includes(keyword)
