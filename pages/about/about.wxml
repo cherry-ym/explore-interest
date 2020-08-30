@@ -1,0 +1,5 @@
+<image class="about"  />
+<!-- 必须设置target="miniProgram" app-id="wx8ffc97ad5bcccc89"（要跳转的appid）open-type="navigate" 跳转到小程序 -->
+<navigator class="nav" target="miniProgram" app-id="wx8ffc97ad5bcccc89" open-type="navigate">
+ <image class="vendor" src="/images/my/vendor.png"></image>
+</navigator> 

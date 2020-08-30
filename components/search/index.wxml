@@ -40,4 +40,8 @@
             <v-book showLike="{{false}}" book="{{item}}" class="book" />
         </block>
     </view>
+
+    <v-loading wx:if="{{loadingCenter}}" class="loading-center" />
+    <v-loading wx:if="{{loading}}" class="loading" />
+    <text wx:if="{{noneResult}}" class="empty-tip">没有搜索到书籍</text>
 </view>
